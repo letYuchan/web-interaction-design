@@ -2,21 +2,21 @@
 <html lang="ko">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>여행 예산 블렌더 · Budget Blender</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Three.js — Hyperspace Portal</title>
     <style>
       :root {
-        --bg: #0b1220;
-        --card: #0f172a;
-        --muted: #8aa0bf;
-        --text: #e6eefc;
-        --accent: #6ee7b7;
-        --accent-2: #60a5fa;
-        --danger: #f87171;
-        --ring: rgba(96, 165, 250, 0.35);
-        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35),
-          inset 0 1px 0 rgba(255, 255, 255, 0.03);
-        --radius: 16px;
+        --bg: #04060b;
+        --ink: #e6eefc;
+        --muted: #9bb0cf;
+        --a: #60a5fa;
+        --b: #6ee7b7;
+        --c: #f59e0b;
+        --d: #a78bfa;
+        --e: #f87171;
       }
       * {
         box-sizing: border-box;
@@ -27,780 +27,75 @@
       }
       body {
         margin: 0;
-        font-family: ui-sans-serif, system-ui, AppleSDGothicNeo, Segoe UI,
-          Roboto, Pretendard, Helvetica, Arial, sans-serif;
+        overflow: hidden;
         background: radial-gradient(
             1200px 800px at 80% -10%,
-            #1f2937 0%,
+            #0c1630 0%,
             transparent 60%
           ),
-          radial-gradient(1000px 700px at -10% 20%, #0e2a5a 0%, transparent 60%),
           var(--bg);
-        color: var(--text);
-        line-height: 1.4;
+        color: var(--ink);
+        font-family: ui-sans-serif, system-ui, Apple SD Gothic Neo, Segoe UI,
+          Roboto, Pretendard, Helvetica, Arial, sans-serif;
+      }
+      #app {
+        position: fixed;
+        inset: 0;
+      }
+      #hud {
+        position: fixed;
+        left: 12px;
+        top: 12px;
+        z-index: 10;
         display: flex;
+        gap: 10px;
         align-items: center;
-        justify-content: center;
-        padding: 24px;
-      }
-      .app {
-        width: min(1100px, 100%);
-        display: grid;
-        gap: 20px;
-      }
-      .title {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        flex-wrap: wrap;
-      }
-      h1 {
-        font-size: clamp(20px, 2.7vw, 34px);
-        margin: 0;
-        letter-spacing: 0.2px;
-      }
-      .subtitle {
-        color: var(--muted);
-        font-size: 14px;
-      }
-      .grid {
-        display: grid;
-        gap: 20px;
-        grid-template-columns: 1.1fr 0.9fr;
-      }
-      @media (max-width: 900px) {
-        .grid {
-          grid-template-columns: 1fr;
-        }
-      }
-      .card {
-        background: linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.03),
-          rgba(255, 255, 255, 0)
-        );
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(8px);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-      }
-      .card .hd {
-        padding: 16px 18px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-        font-weight: 600;
-      }
-      .card .bd {
-        padding: 18px;
-      }
-      .stack {
-        display: grid;
-        gap: 14px;
-      }
-      label {
-        font-size: 13px;
-        color: var(--muted);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .row {
-        display: grid;
-        grid-template-columns: 1fr 140px;
-        gap: 12px;
-        align-items: end;
-      }
-      .row > .field {
-        display: grid;
-        gap: 6px;
-      }
-      input[type="number"] {
-        width: 100%;
-        padding: 12px 12px;
-        background: #0b1426;
-        color: var(--text);
+        backdrop-filter: blur(8px) saturate(140%);
+        background: rgba(10, 16, 28, 0.4);
         border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 12px;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
-        outline: none;
+        padding: 8px 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
       }
-      input[type="number"]:focus {
-        border-color: var(--accent-2);
-        box-shadow: 0 0 0 4px var(--ring);
-      }
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 12px;
-        font-size: 13px;
-        color: var(--text);
-        background: #101a31;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+      .chip {
+        font-size: 12px;
+        color: var(--muted);
+        border: 1px dashed rgba(255, 255, 255, 0.2);
+        padding: 5px 8px;
         border-radius: 999px;
       }
-      .btn {
-        appearance: none;
-        cursor: pointer;
-        padding: 10px 14px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: linear-gradient(180deg, #1b2a49, #14233f);
-        color: var(--text);
-        font-weight: 600;
-        transition: transform 0.06s ease, box-shadow 0.2s ease,
-          border-color 0.2s ease;
-      }
-      .btn:hover {
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-      }
-      .btn:active {
-        transform: translateY(1px);
-      }
-      .btn.acc {
-        background: linear-gradient(180deg, #1a3a27, #102a1b);
-        border-color: rgba(110, 231, 183, 0.35);
-      }
-      .btn.warn {
-        background: linear-gradient(180deg, #3a1a1a, #2a1010);
-        border-color: rgba(248, 113, 113, 0.4);
-      }
-      .muted {
-        color: var(--muted);
-      }
-      .sliders {
-        display: grid;
-        gap: 14px;
-      }
-      .slider {
-        display: grid;
-        gap: 8px;
-        background: #0b1426;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        padding: 12px;
-        border-radius: 12px;
-      }
-      .slider .top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-      }
-      .slider .name {
-        font-weight: 600;
-      }
-      .slider .pct {
-        font-variant-numeric: tabular-nums;
-      }
-      input[type="range"] {
-        width: 100%;
-        height: 28px;
-        -webkit-appearance: none;
-        background: transparent;
-      }
-      input[type="range"]::-webkit-slider-runnable-track {
+      .dot {
+        width: 8px;
         height: 8px;
-        background: linear-gradient(
-          90deg,
-          rgba(96, 165, 250, 0.5),
-          rgba(110, 231, 183, 0.6)
-        );
-        border-radius: 999px;
-      }
-      input[type="range"]::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 22px;
-        height: 22px;
-        margin-top: -7px;
         border-radius: 50%;
-        background: radial-gradient(
-          circle at 30% 30%,
-          #fff,
-          #c7e0ff 60%,
-          #7aa7ff 100%
-        );
-        border: 1px solid rgba(255, 255, 255, 0.6);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        display: inline-block;
+        background: radial-gradient(circle at 30% 30%, #fff, var(--a));
       }
-      .sumline {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 8px;
-        padding: 10px 12px;
-        border-radius: 12px;
-        background: #0b1426;
-        border: 1px dashed rgba(255, 255, 255, 0.15);
-      }
-      .sumline.bad {
-        border-color: rgba(248, 113, 113, 0.7);
-        background: #1a0f12;
-      }
-      .sumline .sum {
-        font-weight: 700;
-      }
-      .actions {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-      /* right side */
-      .calc-grid {
-        display: grid;
-        gap: 16px;
-      }
-      .donut {
-        width: 260px;
-        aspect-ratio: 1/1;
-        border-radius: 50%;
-        background: conic-gradient(#334155 0 100%);
-        position: relative;
-        margin: auto;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35),
-          inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      }
-      .donut::after {
-        content: "";
-        position: absolute;
-        inset: 22px;
-        background: radial-gradient(circle at 50% 35%, #0c1325, #0b1220);
-        border-radius: 50%;
-        box-shadow: inset 0 8px 20px rgba(0, 0, 0, 0.45),
-          0 0 0 1px rgba(255, 255, 255, 0.06);
-      }
-      .legend {
-        display: grid;
-        gap: 10px;
-      }
-      .legend .item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        padding: 10px 12px;
-        background: #0b1426;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 12px;
-      }
-      .legend .left {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .swatch {
-        width: 14px;
-        height: 14px;
-        border-radius: 3px;
-        border: 1px solid rgba(255, 255, 255, 0.5);
-      }
-      .money {
-        font-weight: 700;
-      }
-      .kpi {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-      }
-      @media (max-width: 520px) {
-        .kpi {
-          grid-template-columns: 1fr;
-        }
-      }
-      .tile {
-        background: #0b1426;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 12px;
-        padding: 12px;
-      }
-      .tile .t {
+      #hint {
+        position: fixed;
+        right: 12px;
+        bottom: 12px;
         font-size: 12px;
         color: var(--muted);
-      }
-      .tile .v {
-        font-size: 20px;
-        font-weight: 800;
-      }
-      .footer {
-        display: flex;
-        gap: 10px;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        margin-top: 6px;
-      }
-      .hint {
-        font-size: 12px;
-        color: var(--muted);
-      }
-      .visually-hidden {
-        position: absolute !important;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
+        background: rgba(10, 16, 28, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 6px 10px;
+        border-radius: 10px;
       }
     </style>
   </head>
   <body>
-    <main class="app">
-      <header class="title">
-        <div>
-          <h1>여행 예산 블렌더</h1>
-          <div class="subtitle">
-            총예산과 일수를 입력하고 카테고리 비율을 조절해 최적의 분배 결과를
-            확인해보세요.
-          </div>
-        </div>
-        <div class="pill" aria-live="polite">
-          <span>🎯 실시간 계산</span><span class="muted">·</span
-          ><span id="statusText" class="muted">대기 중</span>
-        </div>
-      </header>
+    <div id="app"></div>
+    <div id="hud">
+      <span class="dot"></span><span>Hyperspace Portal</span
+      ><span class="chip">Drag: Orbit</span><span class="chip">Wheel: Zoom</span
+      ><span class="chip">Scroll page: Pulse</span>
+    </div>
+    <div id="hint">
+      Three.js + PostFX (Bloom/RGBShift/Afterimage) · No assets · Pure math ✨
+    </div>
 
-      <section class="grid">
-        <div class="card">
-          <div class="hd">입력</div>
-          <div class="bd stack">
-            <div class="row">
-              <div class="field">
-                <label for="budget">총 예산 (원)</label>
-                <input
-                  id="budget"
-                  type="number"
-                  min="0"
-                  step="1000"
-                  value="800000"
-                />
-              </div>
-              <button
-                id="btnMaximize"
-                class="btn"
-                type="button"
-                title="입력을 합리적으로 극대화해보기"
-              >
-                추천 분배
-              </button>
-            </div>
-            <div class="row">
-              <div class="field">
-                <label for="days">여행 일수 (일)</label>
-                <input id="days" type="number" min="1" step="1" value="3" />
-              </div>
-              <button id="btnReset" class="btn" type="button">초기화</button>
-            </div>
-
-            <div
-              class="sliders"
-              id="sliderList"
-              aria-describedby="sumHelp"
-            ></div>
-
-            <div class="sumline" id="sumLine" role="status" aria-live="polite">
-              <span class="muted">합계</span>
-              <span class="sum"><span id="sumPct">0</span>%</span>
-            </div>
-            <div id="sumHelp" class="hint">
-              합계가 100%가 아니면 아래 버튼으로 빠르게 맞춰보세요.
-            </div>
-
-            <div class="actions">
-              <button id="btnNormalize" class="btn acc" type="button">
-                정규화(=100%)
-              </button>
-              <button id="btnEven" class="btn" type="button">균등분배</button>
-              <button id="btnRandom" class="btn" type="button">랜덤분배</button>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="hd">결과</div>
-          <div class="bd calc-grid">
-            <div class="kpi">
-              <div class="tile">
-                <div class="t">총 예산</div>
-                <div class="v" id="kpiBudget">-</div>
-              </div>
-              <div class="tile">
-                <div class="t">여행 일수</div>
-                <div class="v" id="kpiDays">-</div>
-              </div>
-              <div class="tile">
-                <div class="t">1일당 예산</div>
-                <div class="v" id="kpiPerDay">-</div>
-              </div>
-            </div>
-
-            <div
-              class="donut"
-              id="donut"
-              role="img"
-              aria-label="카테고리별 예산 도넛 차트"
-            ></div>
-
-            <div class="legend" id="legend"></div>
-
-            <div class="footer">
-              <div class="actions">
-                <button id="btnExport" class="btn acc" type="button">
-                  JSON 내보내기
-                </button>
-                <button id="btnCopy" class="btn" type="button">
-                  요약 복사
-                </button>
-              </div>
-              <div class="hint">
-                참고: 모든 계산은 클라이언트에서만 수행됩니다.
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <script>
-      (() => {
-        const CATEGORY_PRESET = [
-          { key: "stay", name: "숙소", color: "#60a5fa", value: 40 },
-          { key: "food", name: "식비", color: "#6ee7b7", value: 25 },
-          { key: "move", name: "교통", color: "#f59e0b", value: 15 },
-          { key: "fun", name: "액티비티", color: "#a78bfa", value: 15 },
-          { key: "etc", name: "기타", color: "#f87171", value: 5 },
-        ];
-
-        const elBudget = document.getElementById("budget");
-        const elDays = document.getElementById("days");
-        const elSliderList = document.getElementById("sliderList");
-        const elSumPct = document.getElementById("sumPct");
-        const elSumLine = document.getElementById("sumLine");
-        const elKpiBudget = document.getElementById("kpiBudget");
-        const elKpiDays = document.getElementById("kpiDays");
-        const elKpiPerDay = document.getElementById("kpiPerDay");
-        const elDonut = document.getElementById("donut");
-        const elLegend = document.getElementById("legend");
-        const elStatus = document.getElementById("statusText");
-
-        const btnNormalize = document.getElementById("btnNormalize");
-        const btnEven = document.getElementById("btnEven");
-        const btnRandom = document.getElementById("btnRandom");
-        const btnReset = document.getElementById("btnReset");
-        const btnMaximize = document.getElementById("btnMaximize");
-        const btnExport = document.getElementById("btnExport");
-        const btnCopy = document.getElementById("btnCopy");
-
-        let categories = structuredClone(CATEGORY_PRESET);
-
-        const clamp = (n, min, max) => Math.min(Math.max(n, min), max);
-        const fmtMoney = (n) => n.toLocaleString("ko-KR") + "원";
-        const fmtPct = (n) => `${n.toFixed(0)}%`;
-
-        const sumPct = () =>
-          categories.reduce((a, c) => a + Number(c.value || 0), 0);
-
-        function normalizeTo100() {
-          const s = sumPct() || 1;
-          categories = categories.map((c) => ({
-            ...c,
-            value: Math.round((c.value / s) * 100),
-          }));
-          const diff = 100 - sumPct();
-          categories[categories.length - 1].value = clamp(
-            categories[categories.length - 1].value + diff,
-            0,
-            100
-          );
-          render();
-        }
-
-        function evenSplit() {
-          const base = Math.floor(100 / categories.length);
-          const rem = 100 - base * categories.length;
-          categories = categories.map((c, i) => ({
-            ...c,
-            value: base + (i < rem ? 1 : 0),
-          }));
-          render();
-        }
-
-        function randomSplit() {
-          const n = categories.length;
-          const cuts = Array.from({ length: n - 1 }, () => Math.random()).sort(
-            (a, b) => a - b
-          );
-          const parts = [0, ...cuts, 1]
-            .map((v, i, arr) => (i ? v - arr[i - 1] : 0))
-            .slice(1);
-          categories = categories.map((c, i) => ({
-            ...c,
-            value: Math.max(1, Math.round(parts[i] * 100)),
-          }));
-          normalizeTo100();
-        }
-
-        function reasonablePreset() {
-          const days = Number(elDays.value) || 1;
-          const budget = Number(elBudget.value) || 0;
-          const stayBase = clamp(35 + Math.min(10, days * 2), 35, 55);
-          const foodBase = clamp(
-            25 + (budget < 400000 ? 5 : budget > 1200000 ? -5 : 0),
-            18,
-            35
-          );
-          const moveBase = 15;
-          const funBase = budget > 1000000 ? 18 : 12;
-          let tmp = [
-            { key: "stay", name: "숙소", color: "#60a5fa", value: stayBase },
-            { key: "food", name: "식비", color: "#6ee7b7", value: foodBase },
-            { key: "move", name: "교통", color: "#f59e0b", value: moveBase },
-            { key: "fun", name: "액티비티", color: "#a78bfa", value: funBase },
-            { key: "etc", name: "기타", color: "#f87171", value: 100 }, // 임시
-          ];
-          const s = tmp.slice(0, 4).reduce((a, c) => a + c.value, 0);
-          tmp[4].value = clamp(100 - s, 0, 100);
-          categories = tmp;
-          render();
-        }
-
-        function buildSliders() {
-          elSliderList.innerHTML = "";
-          categories.forEach((c, idx) => {
-            const wrap = document.createElement("div");
-            wrap.className = "slider";
-            wrap.innerHTML = `
-        <div class="top">
-          <div class="name">${c.name}</div>
-          <div class="pct" aria-live="polite"><span id="pct-${c.key}">${c.value}</span>%</div>
-        </div>
-        <input type="range" min="0" max="100" step="1" value="${c.value}" aria-label="${c.name} 비율 조절" />
-      `;
-            const range = wrap.querySelector('input[type="range"]');
-            range.addEventListener("input", (e) => {
-              categories[idx].value = Number(e.target.value);
-              wrap.querySelector(`#pct-${c.key}`).textContent =
-                categories[idx].value;
-              updateSumAndChartOnly();
-              elStatus.textContent = "계산 중…";
-            });
-            range.addEventListener("change", () => {
-              render();
-              elStatus.textContent = "적용됨";
-            });
-            elSliderList.appendChild(wrap);
-          });
-        }
-
-        function compute() {
-          const budget = clamp(Number(elBudget.value) || 0, 0, 1e12);
-          const days = clamp(Number(elDays.value) || 1, 1, 365);
-          const perDay = budget / days;
-
-          const results = categories.map((c) => {
-            const total = Math.round(budget * (c.value / 100));
-            const per = Math.round(perDay * (c.value / 100));
-            return { ...c, total, per };
-          });
-
-          return { budget, days, perDay: Math.round(perDay), results };
-        }
-
-        function updateKPIs(data) {
-          elKpiBudget.textContent = fmtMoney(data.budget);
-          elKpiDays.textContent = data.days + "일";
-          elKpiPerDay.textContent = fmtMoney(data.perDay);
-        }
-
-        function updateLegend(data) {
-          elLegend.innerHTML = "";
-          data.results.forEach((r) => {
-            const row = document.createElement("div");
-            row.className = "item";
-            row.innerHTML = `
-        <div class="left">
-          <span class="swatch" style="background:${r.color}"></span>
-          <strong>${r.name}</strong>
-          <span class="muted">· ${fmtPct(r.value)}</span>
-        </div>
-        <div>
-          <span class="money">${fmtMoney(r.total)}</span>
-          <span class="muted"> (1일 ${fmtMoney(r.per)})</span>
-        </div>
-      `;
-            elLegend.appendChild(row);
-          });
-        }
-
-        function updateDonut() {
-          let angle = 0;
-          const parts = categories
-            .map((c) => {
-              const start = angle;
-              const end = angle + (c.value / 100) * 360;
-              angle = end;
-              return `${c.color} ${start}deg ${end}deg`;
-            })
-            .join(", ");
-          elDonut.style.background = `conic-gradient(${
-            parts || "#334155 0 360deg"
-          })`;
-        }
-
-        function updateSumWarn() {
-          const s = sumPct();
-          elSumPct.textContent = s.toFixed(0);
-          const ok = Math.abs(s - 100) < 0.5;
-          elSumLine.classList.toggle("bad", !ok);
-          elSumLine.querySelector(".muted").textContent = ok
-            ? "합계"
-            : "합계(경고)";
-        }
-
-        function updateSumAndChartOnly() {
-          updateSumWarn();
-          updateDonut();
-        }
-
-        function render() {
-          [...elSliderList.querySelectorAll(".slider")].forEach((node, i) => {
-            const pct = node.querySelector(".pct span");
-            if (pct) pct.textContent = categories[i].value;
-            const range = node.querySelector('input[type="range"]');
-            if (range) range.value = categories[i].value;
-          });
-          updateSumWarn();
-          updateDonut();
-          const data = compute();
-          updateKPIs(data);
-          updateLegend(data);
-          elStatus.textContent = "완료";
-        }
-
-        function exportJSON() {
-          const data = compute();
-          const payload = {
-            generatedAt: new Date().toISOString(),
-            budget: data.budget,
-            days: data.days,
-            perDay: data.perDay,
-            shares: categories.map(({ key, name, value, color }) => ({
-              key,
-              name,
-              percent: value,
-              color,
-            })),
-            breakdown: data.results.map(({ key, name, total, per, value }) => ({
-              key,
-              name,
-              percent: value,
-              total,
-              per,
-            })),
-          };
-          const blob = new Blob([JSON.stringify(payload, null, 2)], {
-            type: "application/json",
-          });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = "budget-blender.json";
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          URL.revokeObjectURL(url);
-        }
-
-        async function copySummary() {
-          const data = compute();
-          const lines = [
-            `여행 예산 블렌더 결과`,
-            `- 총 예산: ${fmtMoney(data.budget)}`,
-            `- 여행 일수: ${data.days}일`,
-            `- 1일당 예산: ${fmtMoney(data.perDay)}`,
-            ...data.results.map(
-              (r) =>
-                `  • ${r.name} ${fmtPct(r.value)} → 총 ${fmtMoney(
-                  r.total
-                )} (1일 ${fmtMoney(r.per)})`
-            ),
-          ].join("\n");
-          try {
-            await navigator.clipboard.writeText(lines);
-            toast("요약을 복사했어요 📋");
-          } catch {
-            toast("복사 권한을 허용해주세요.");
-          }
-        }
-        let toastTimer;
-        function toast(msg) {
-          let node = document.getElementById("toast");
-          if (!node) {
-            node = document.createElement("div");
-            node.id = "toast";
-            node.setAttribute("role", "status");
-            node.style.position = "fixed";
-            node.style.left = "50%";
-            node.style.bottom = "24px";
-            node.style.transform = "translateX(-50%)";
-            node.style.background = "#101a31";
-            node.style.border = "1px solid rgba(255,255,255,.15)";
-            node.style.padding = "10px 14px";
-            node.style.borderRadius = "12px";
-            node.style.boxShadow = "0 10px 30px rgba(0,0,0,.35)";
-            node.style.color = "var(--text)";
-            node.style.fontWeight = "600";
-            document.body.appendChild(node);
-          }
-          node.textContent = msg;
-          node.style.opacity = "1";
-          clearTimeout(toastTimer);
-          toastTimer = setTimeout(() => (node.style.opacity = "0"), 1800);
-        }
-        function wire() {
-          elBudget.addEventListener("input", () => {
-            elStatus.textContent = "계산 중…";
-            render();
-          });
-          elDays.addEventListener("input", () => {
-            elStatus.textContent = "계산 중…";
-            render();
-          });
-          btnNormalize.addEventListener("click", () => {
-            normalizeTo100();
-            toast("합계를 100%로 맞췄어요");
-          });
-          btnEven.addEventListener("click", () => {
-            evenSplit();
-            toast("균등하게 나눴어요");
-          });
-          btnRandom.addEventListener("click", () => {
-            randomSplit();
-            toast("랜덤 비율로 섞었어요 🎲");
-          });
-          btnReset.addEventListener("click", () => {
-            categories = structuredClone(CATEGORY_PRESET);
-            elBudget.value = 800000;
-            elDays.value = 3;
-            buildSliders();
-            render();
-            toast("초기화됨");
-          });
-          btnMaximize.addEventListener("click", () => {
-            reasonablePreset();
-            toast("여정에 맞는 추천 분배 적용");
-          });
-          btnExport.addEventListener("click", exportJSON);
-          btnCopy.addEventListener("click", copySummary);
-        }
-
-        function init() {
-          buildSliders();
-          wire();
-          render();
-        }
-        init();
-      })();
-    </script>
+    <!-- 모듈 엔트리 -->
+    <script type="module" src="./main.js"></script>
   </body>
 </html>
