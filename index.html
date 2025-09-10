@@ -362,7 +362,6 @@
       </header>
 
       <section class="grid">
-        <!-- Left: inputs -->
         <div class="card">
           <div class="hd">입력</div>
           <div class="bd stack">
@@ -394,9 +393,11 @@
               <button id="btnReset" class="btn" type="button">초기화</button>
             </div>
 
-            <div class="sliders" id="sliderList" aria-describedby="sumHelp">
-              <!-- sliders injected here -->
-            </div>
+            <div
+              class="sliders"
+              id="sliderList"
+              aria-describedby="sumHelp"
+            ></div>
 
             <div class="sumline" id="sumLine" role="status" aria-live="polite">
               <span class="muted">합계</span>
@@ -415,8 +416,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Right: results -->
         <div class="card">
           <div class="hd">결과</div>
           <div class="bd calc-grid">
@@ -442,9 +441,7 @@
               aria-label="카테고리별 예산 도넛 차트"
             ></div>
 
-            <div class="legend" id="legend">
-              <!-- legend rows injected -->
-            </div>
+            <div class="legend" id="legend"></div>
 
             <div class="footer">
               <div class="actions">
@@ -466,7 +463,6 @@
 
     <script>
       (() => {
-        // ----- Config -----
         const CATEGORY_PRESET = [
           { key: "stay", name: "숙소", color: "#60a5fa", value: 40 },
           { key: "food", name: "식비", color: "#6ee7b7", value: 25 },
@@ -475,7 +471,6 @@
           { key: "etc", name: "기타", color: "#f87171", value: 5 },
         ];
 
-        // ----- DOM refs -----
         const elBudget = document.getElementById("budget");
         const elDays = document.getElementById("days");
         const elSliderList = document.getElementById("sliderList");
@@ -498,7 +493,6 @@
 
         let categories = structuredClone(CATEGORY_PRESET);
 
-        // ----- Helpers -----
         const clamp = (n, min, max) => Math.min(Math.max(n, min), max);
         const fmtMoney = (n) => n.toLocaleString("ko-KR") + "원";
         const fmtPct = (n) => `${n.toFixed(0)}%`;
@@ -512,7 +506,6 @@
             ...c,
             value: Math.round((c.value / s) * 100),
           }));
-          // rounding might drift; fix by adjusting last item
           const diff = 100 - sumPct();
           categories[categories.length - 1].value = clamp(
             categories[categories.length - 1].value + diff,
@@ -533,7 +526,6 @@
         }
 
         function randomSplit() {
-          // random positive parts that sum 100
           const n = categories.length;
           const cuts = Array.from({ length: n - 1 }, () => Math.random()).sort(
             (a, b) => a - b
@@ -549,7 +541,6 @@
         }
 
         function reasonablePreset() {
-          // 간단한 휴먼 로직: 총예산·일수에 따라 숙소 가중치/식비 보정
           const days = Number(elDays.value) || 1;
           const budget = Number(elBudget.value) || 0;
           const stayBase = clamp(35 + Math.min(10, days * 2), 35, 55);
@@ -594,7 +585,7 @@
               elStatus.textContent = "계산 중…";
             });
             range.addEventListener("change", () => {
-              render(); // finalize
+              render();
               elStatus.textContent = "적용됨";
             });
             elSliderList.appendChild(wrap);
@@ -672,7 +663,6 @@
         }
 
         function render() {
-          // sync slider values with current model
           [...elSliderList.querySelectorAll(".slider")].forEach((node, i) => {
             const pct = node.querySelector(".pct span");
             if (pct) pct.textContent = categories[i].value;
@@ -687,7 +677,6 @@
           elStatus.textContent = "완료";
         }
 
-        // ----- Export & Copy -----
         function exportJSON() {
           const data = compute();
           const payload = {
@@ -743,8 +732,6 @@
             toast("복사 권한을 허용해주세요.");
           }
         }
-
-        // ----- Tiny toast -----
         let toastTimer;
         function toast(msg) {
           let node = document.getElementById("toast");
@@ -770,8 +757,6 @@
           clearTimeout(toastTimer);
           toastTimer = setTimeout(() => (node.style.opacity = "0"), 1800);
         }
-
-        // ----- Wire events -----
         function wire() {
           elBudget.addEventListener("input", () => {
             elStatus.textContent = "계산 중…";
@@ -809,7 +794,6 @@
           btnCopy.addEventListener("click", copySummary);
         }
 
-        // ----- Init -----
         function init() {
           buildSliders();
           wire();
