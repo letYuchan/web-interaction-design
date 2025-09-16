@@ -1,19 +1,19 @@
 const trackInfoMap = {
   1: {
-    music: "/src/assets/sounds/cheerful.mp3",
-    bg: "/src/assets/imgs/cheerful.png",
+    music: "../assets/sounds/cheerful.mp3",
+    bg: "../assets/imgs/cheerful.png",
   },
   2: {
-    music: "/src/assets/sounds/fearful.mp3",
-    bg: "/src/assets/imgs/fearful.png",
+    music: "../assets/sounds/fearful.mp3",
+    bg: "../assets/imgs/fearful.png",
   },
   3: {
-    music: "/src/assets/sounds/relaxed.mp3",
-    bg: "/src/assets/imgs/relaxed.png",
+    music: "../assets/sounds/relaxed.mp3",
+    bg: "../assets/imgs/relaxed.png",
   },
   4: {
-    music: "/src/assets/sounds/tenseful.mp3",
-    bg: "/src/assets/imgs/tenseful.png",
+    music: "../assets/sounds/tenseful.mp3",
+    bg: "../assets/imgs/tenseful.png",
   },
 };
 
