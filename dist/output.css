@@ -554,6 +554,26 @@ video {
   display: none;
 }
 
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.inset-0 {
+  inset: 0px;
+}
+
+.z-10 {
+  z-index: 10;
+}
+
 .mb-4 {
   margin-bottom: 1rem;
 }
@@ -566,6 +586,10 @@ video {
   display: flex;
 }
 
+.h-12 {
+  height: 3rem;
+}
+
 .h-\[200px\] {
   height: 200px;
 }
@@ -574,12 +598,20 @@ video {
   height: 400px;
 }
 
-.h-12 {
-  height: 3rem;
+.h-\[70\%\] {
+  height: 70%;
 }
 
 .min-h-screen {
   min-height: 100vh;
+}
+
+.w-12 {
+  width: 3rem;
+}
+
+.w-80 {
+  width: 20rem;
 }
 
 .w-\[400px\] {
@@ -590,12 +622,16 @@ video {
   width: 100%;
 }
 
-.w-12 {
-  width: 3rem;
+.w-\[70\%\] {
+  width: 70%;
 }
 
 .flex-grow {
   flex-grow: 1;
+}
+
+.resize {
+  resize: both;
 }
 
 .list-none {
@@ -650,12 +686,12 @@ video {
   border-width: 1px;
 }
 
-.border-8 {
-  border-width: 8px;
-}
-
 .border-2 {
   border-width: 2px;
+}
+
+.border-8 {
+  border-width: 8px;
 }
 
 .border-black {
@@ -663,19 +699,14 @@ video {
   border-color: rgb(0 0 0 / var(--tw-border-opacity, 1));
 }
 
-.border-gray-300 {
-  --tw-border-opacity: 1;
-  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
-}
-
-.border-white {
-  --tw-border-opacity: 1;
-  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
-}
-
 .border-emerald-400 {
   --tw-border-opacity: 1;
   border-color: rgb(52 211 153 / var(--tw-border-opacity, 1));
+}
+
+.border-gray-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
 }
 
 .border-transparent {
@@ -700,12 +731,12 @@ video {
      object-fit: cover;
 }
 
-.p-4 {
-  padding: 1rem;
-}
-
 .p-10 {
   padding: 2.5rem;
+}
+
+.p-4 {
+  padding: 1rem;
 }
 
 .px-3 {
@@ -723,18 +754,14 @@ video {
   padding-bottom: 0.5rem;
 }
 
-.text-center {
-  text-align: center;
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
 .text-3xl {
   font-size: 1.875rem;
   line-height: 2.25rem;
-}
-
-.text-2xl {
-  font-size: 1.5rem;
-  line-height: 2rem;
 }
 
 .font-bold {
@@ -775,10 +802,14 @@ video {
   --tw-ring-color: rgb(52 211 153 / var(--tw-ring-opacity, 1));
 }
 
-.hover\:opacity-70:hover {
-  opacity: 0.7;
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 .hover\:opacity-100:hover {
   opacity: 1;
+}
+
+.hover\:opacity-70:hover {
+  opacity: 0.7;
 }

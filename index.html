@@ -6,14 +6,19 @@
     <link rel="stylesheet" href="./dist//output.css" />
     <script src="./main.js" type="module" defer></script>
     <title>Week3: 오디오 이용하기</title>
+    <style>
+      #game {
+        image-rendering: optimizeSpeed;
+      }
+    </style>
   </head>
   <body>
     <main
-      class="flex flex-col justify-between items-center w-full min-h-screen p-10 bg-cover bg-center"
+      class="relative flex flex-col justify-between items-center w-full min-h-screen p-10 bg-cover bg-center"
       style="background-image: url('./src/assets/imgs/cheerful.png')"
     >
       <div></div>
-      <div></div>
+      <canvas id="game" class="pointer-events-none w-[70%] h-[70%]"></canvas>
       <section class="self-start">
         <ul class="flex gap-2 flex-wrap list-none">
           <li>
