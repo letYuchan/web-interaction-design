@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0 20;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+      }
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: blue;
+      }
+      #controller {
+        width: 100%;
+        display: flex;
+        align-items: center;
+      }
+      #initButton {
+        flex-grow: 1;
+      }
+      #audioButton {
+        flex-grow: 1;
+      }
+      #box-container {
+        width: 100%;
+        display: flex;
+        flex: 1 1 0%;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="controller">
+      <button id="initButton">색상 초기화</button>
+      <audio id="audioButton" src="music.mp3" controls></audio>
+    </div>
+    <div id="box-container"></div>
+  </body>
+  <script>
+    const boxContainer = document.querySelector("#box-container");
+    for (i = 0; i < 200; i++) {
+      boxContainer.innerHTML += `
+       <div
+      class="box"
+      style="width: 100px; height: 100px; background-color: blue"
+      onmouseover="this.style.background='red'"
+    >${i}</div>
+      `;
+    }
+
+    const boxList = document.querySelectorAll(".box");
+
+    let isColorRed = false;
+
+    boxList.forEach((box) => {
+      box.addEventListener("click", () => {
+        if (isColorRed === false) {
+          box.style.background = "red";
+          isColorRed = true;
+          return;
+        }
+
+        if (isColorRed === true) {
+          box.style.background = "blue";
+          isColorRed = false;
+          return;
+        }
+      });
+    });
+
+    const initAllColor = () => {
+      boxList.forEach((box) => (box.style.background = "blue"));
+    };
+
+    const initButton = document.querySelector("#initButton");
+
+    initButton.addEventListener("click", initAllColor);
+  </script>
+</html>
