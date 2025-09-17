@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../dist/output.css" />
+    <title>3주차</title>
+  </head>
+  <body class="flex flex-col justify-center items-center w-full min-h-screen">
+    <img
+      id="cat"
+      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuxi817jZCXirafePHPdz1cRG7QVbZYcUVXg&s"
+      alt="고양이"
+      class="w-25 h-auto cursor-pointer mb-4"
+    />
+    <input
+      id="colorInput"
+      type="text"
+      class="mb-2 border border-gray p-4 w-[400px] text-center"
+      placeholder="원하는 색상을 입력하세요. ex) red, #ff0000"
+    />
+    <input type="color" value="#ff00ff" class="mb-2" />
+    <input type="date" class="mb-2" />
+  </body>
+  <script>
+    // 함수 만들어보기
+    const add = (a, b) => {
+      console.log("더한 값: ", a + b);
+    };
+
+    const a = 1;
+    const b = 2;
+    let c = add(a, b); // 더한 값: 3
+    console.log(add(1, 2)); // undefined -> return 값이 없기 때문
+    c = add(20, 40); // 더한 값: 60
+    console.log(c); // undefined -> return 값이 없기 때문
+
+    const print = (text) => {
+      document.body.innerHTML += `<div class="text-3xl font-bold">${text}</div>`;
+    };
+
+    print("Hello");
+
+    const multiplePrint = (text, count) => {
+      for (let i = 0; i < count; i++) {
+        print(text);
+      }
+    };
+
+    multiplePrint("안녕하세요", 3);
+
+    const sum = (from, to) => {
+      let total = 0;
+      for (let i = from; i <= to; i++) {
+        total += i;
+        console.log(i, total);
+      }
+      return total;
+    };
+
+    const result = sum(1, 100);
+    console.log(result);
+
+    const catImg = document.querySelector("#cat");
+    catImg.addEventListener("click", () => {
+      catImg.classList.toggle("rotate-180");
+      catImg.classList.toggle("scale-50");
+      const meow = new Audio("../assets/sounds/meow.mp3");
+      meow.play();
+    });
+
+    const putWoman = (i) => {
+      document.body.insertAdjacentHTML(
+        "beforeend",
+        `<img
+        id="woman-${i}"
+        src="../assets/imgs/woman.jpeg"
+        alt="여자"
+        class="person woman w-24 h-24 cursor-pointer"/>`
+      );
+    };
+
+    const putMan = (i) => {
+      document.body.insertAdjacentHTML(
+        "beforeend",
+        `<img
+        id="man-${i}"
+        src="../assets/imgs/man.jpeg"
+        alt="남자"
+        class="person man w-24 h-24 cursor-pointer"/>`
+      );
+    };
+
+    for (let i = 0; i < 5; i++) {
+      putWoman(i);
+      putMan(i);
+    }
+
+    document.querySelectorAll(".person").forEach((p) => {
+      p.addEventListener("click", () => {
+        if (p.classList.contains("woman")) {
+          p.src = "../assets/imgs/man.jpeg";
+          p.classList.replace("woman", "man");
+        } else {
+          p.src = "../assets/imgs/woman.jpeg";
+          p.classList.replace("man", "woman");
+        }
+      });
+    });
+
+    const colorInput = document.querySelector("#colorInput");
+    colorInput.addEventListener("change", () => {
+      document.body.style.backgroundColor = colorInput.value;
+    });
+  </script>
+</html>
